@@ -42,7 +42,7 @@ build() {
         --lang "ru-RU" --user-name "IEUSER" --user-password "Passw0rd!" \
         --admin-password "Passw0rd!" --computer-name "MAINSERVER" \
         --mac-address "$WIN_MAC_ADDRESS" --ip-address "$WIN_IP_ADDRESS" \
-        --default-gw "$ROUTER_IP" --dns-server "127.0.0.1" \
+        --route-prefix "0.0.0.0/0" --default-gw "$ROUTER_IP" --dns-server "127.0.0.1" \
         --secondary-dns "1.1.1.1" --setup-command "$powershell_script" 
 
      /opt/project/create_config_iso.sh --build-dir "$ISO_TEMP_ROOT_BUILD_DIR" \
