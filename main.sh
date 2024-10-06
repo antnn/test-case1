@@ -39,7 +39,7 @@ build() {
     /opt/project/generate_autounattend.sh --image-index "2" \
         --template-file "/opt/project/autounattend.template.xml" \
         --output-dir "$ISO_TEMP_ROOT_BUILD_DIR/iso" \
-        --lang "ru-RU" --user-name "IEUSER" --user-password "Passw0rd!" \
+        --lang "ru_RU" --user-name "IEUSER" --user-password "Passw0rd!" \
         --admin-password "Passw0rd!" --computer-name "MAINSERVER" \
         --mac-address "$WIN_MAC_ADDRESS" --ip-address "$WIN_IP_ADDRESS" \
         --default-gw "$ROUTER_IP" --dns-server "127.0.0.1" \
