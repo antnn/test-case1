@@ -1,0 +1,6 @@
+<network>
+    <name>private</name>
+    <bridge name="{{bridge}}"/>
+    <ip address="192.168.152.1" netmask="255.255.255.0">
+    </ip>
+  </network>
