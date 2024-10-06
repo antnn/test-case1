@@ -39,7 +39,7 @@ build() {
     /opt/project/generate_autounattend.sh --image-index "2" \
         --template-file "/opt/project/autounattend.template.xml" \
         --output-dir "$ISO_TEMP_ROOT_BUILD_DIR/iso" \
-        --lang "ru_RU" --user-name "IEUSER" --user-password "Passw0rd!" \
+        --lang "ru-RU" --user-name "IEUSER" --user-password "Passw0rd!" \
         --admin-password "Passw0rd!" --computer-name "MAINSERVER" \
         --mac-address "$WIN_MAC_ADDRESS" --ip-address "$WIN_IP_ADDRESS" \
         --default-gw "$ROUTER_IP" --dns-server "127.0.0.1" \
@@ -71,11 +71,14 @@ run_as_root() {
     systemctl enable --now virtnetworkd-ro.socket
     virsh net-define /opt/project/internal.net.xml
     virsh net-start private && virsh net-autostart private
+    chown -R user /tmp/wayland-0
+    bash -c "sleep 3; mkdir -p /run/user/1000; ln -sf /tmp/wayland-0 /run/user/1000/wayland-0 ; chown -R user /run/user/1000" &
+    sudo -u user bash
 }
 run_as_user() {
     echo Defining Windows Server KVM domain...
     virsh define /opt/vm/win/win2k22.domain.xml
-    bash -c "sleep 1; ln -s /tmp/wayland-0 /run/user/1000/wayland-0 ; chown -R user /run/user/1000" &
+    virt-manager -c qemu:///session
 }
 
 

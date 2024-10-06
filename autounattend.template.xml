@@ -141,7 +141,12 @@
             </DiskConfiguration>
             <ImageInstall>
                 <OSImage>
-                    {{from_image_xml_code}}
+                    <InstallFrom>
+                        <MetaData wcm:action="add">
+                            <Key>/IMAGE/INDEX</Key>
+                            <Value>{{image_index}}</Value>
+                        </MetaData>
+                    </InstallFrom>
                     <InstallTo>
                         <DiskID>0</DiskID>
                         <PartitionID>2</PartitionID>
@@ -181,7 +186,7 @@
                     <Ipv4Settings>
                         <DhcpEnabled>false</DhcpEnabled>
                     </Ipv4Settings>
-                    <Identifier>{{mac_adress}}</Identifier>
+                    <Identifier>{{mac_address}}</Identifier>
                     <UnicastIpAddresses>
                         <IpAddress wcm:action="add" wcm:keyValue="1">{{ip_address}}</IpAddress>
                     </UnicastIpAddresses>
@@ -206,15 +211,7 @@
                 </Interface>
             </Interfaces>
         </component>
-        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <RunSynchronous>
-              <RunSynchronousCommand wcm:action="add">
-                <Order>1</Order>
-                <Path>{{setup_command}}</Path>
-                <Description>Continue setup</Description>
-              </RunSynchronousCommand>
-            </RunSynchronous>
-        </component>
+        
         <component name="Microsoft-Windows-SystemRestore-Main" processorArchitecture="x86"
             publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
@@ -258,6 +255,7 @@
         </component>
     </settings>
     <settings pass="oobeSystem">
+
         <component name="Microsoft-Windows-International-Core" processorArchitecture="x86"
             publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
@@ -278,6 +276,13 @@
             publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                  <Order>1</Order>
+                  <CommandLine>{{setup_command}}</CommandLine>
+                  <Description>Continue Setup</Description>
+                </SynchronousCommand>
+            </FirstLogonCommands>
             <RegisteredOwner>{{user_name}}</RegisteredOwner>
             <OOBE>
                 <HideEULAPage>true</HideEULAPage>
@@ -309,7 +314,7 @@
                         </Password>
                         <Description></Description>
                         <DisplayName>{{user_name}}</DisplayName>
-                        <Group>Administrators</Group>
+                        <Group>Administrators;Power Users</Group>
                         <Name>{{user_name}}</Name>
                     </LocalAccount>
                 </LocalAccounts>
@@ -319,6 +324,13 @@
             publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                  <Order>1</Order>
+                  <CommandLine>{{setup_command}}</CommandLine>
+                  <Description>Continue Setup</Description>
+                </SynchronousCommand>
+            </FirstLogonCommands>
             <RegisteredOwner>{{user_name}}</RegisteredOwner>
             <OOBE>
                 <HideEULAPage>true</HideEULAPage>
@@ -350,7 +362,7 @@
                         </Password>
                         <Description></Description>
                         <DisplayName>{{user_name}}</DisplayName>
-                        <Group>Administrators</Group>
+                        <Group>Administrators;Power Users</Group>
                         <Name>{{user_name}}</Name>
                     </LocalAccount>
                 </LocalAccounts>
