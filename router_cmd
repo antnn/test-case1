@@ -1,0 +1,6 @@
+/interface bridge add name=bridge1
+/interface bridge port add interface=ether2 bridge=bridge1
+/ip address add address=192.168.88.1/24 interface=bridge1
+/ip address add address=192.168.122.3/24 interface=ether1
+/ip route add gateway=192.168.122.1
+/ip dns set servers=1.1.1.1

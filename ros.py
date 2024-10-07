@@ -242,7 +242,43 @@ def parse_args():
     return args
 
 
+def parse_commands(file):
+    import re
+    # Split the input string into lines
+    #lines = input_string.strip().split('\n')
+
+    # Process each line
+    result = []
+    for line in file:
+        line = line.strip()
+        if not line:  # Skip empty lines
+            continue
+        # Split the line into command and arguments
+        match = re.match(r'(.*?)(\s+\S+=|\S+=)', line)
+        if match:
+            command = match.group(1).strip()
+            args_part = line[len(match.group(1)):].strip()
+        else:
+            command = line
+            args_part = ''
+
+        # If there are arguments, split them
+        if args_part:
+            # Split arguments based on "key=value" pattern
+            arguments = re.findall(r'(\S+=\S+)(?:\s|$)', args_part)
+            # Ensure leading '=' for each argument
+            arguments = ['=' + arg.lstrip('=') for arg in arguments]
+        else:
+            arguments = []
+
+        # Combine command and arguments into a single list
+        result.append([command] + arguments)
+
+    return result
+
+
 def main():
+    import os
     args = parse_args()
 
     if args.port == 0:
@@ -258,8 +294,17 @@ def main():
         print("Login failed")
         sys.exit(1)
 
-    r = apiros.command(["/ip/dhcp-server/add", "=interface=bridge1"])
-    print(r)
+    commands = None
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, 'router_cmd')
+    with open(file_path, 'r') as file:
+        commands = parse_commands(file)
+
+    # Print the result
+    for command in commands:
+        r = apiros.command(command)
+        print(r)
 
 
 if __name__ == "__main__":
