@@ -252,10 +252,10 @@ def parse_commands(file):
         # Split the line into command and arguments
         match = re.match(r'(.*?)(\s+\S+=|\S+=)', line)
         if match:
-            command = match.group(1).strip()
+            command = match.group(1).strip().replace(' ', '/')
             args_part = line[len(match.group(1)):].strip()
         else:
-            command = line
+            command = line.replace(' ', '/')
             args_part = ''
 
         # If there are arguments, split them
