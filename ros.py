@@ -3,6 +3,7 @@
 import sys, posix, time, binascii, socket, select, ssl
 import hashlib
 import argparse
+import re
 
 
 class ApiRos:
@@ -243,11 +244,6 @@ def parse_args():
 
 
 def parse_commands(file):
-    import re
-    # Split the input string into lines
-    #lines = input_string.strip().split('\n')
-
-    # Process each line
     result = []
     for line in file:
         line = line.strip()
