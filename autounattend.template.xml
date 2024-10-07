@@ -180,7 +180,11 @@
         </component>
     </settings>
     <settings pass="specialize">
-        <component name="Microsoft-Windows-TCPIP" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <component name="Microsoft-Windows-TCPIP" processorArchitecture="amd64"
+            publicKeyToken="31bf3856ad364e35"
+            language="neutral" versionScope="nonSxS"
+            xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <Interfaces>
                 <Interface wcm:action="add">
                     <Ipv4Settings>
@@ -200,7 +204,11 @@
                 </Interface>
             </Interfaces>
         </component>
-        <component name="Microsoft-Windows-DNS-Client" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <component name="Microsoft-Windows-DNS-Client" processorArchitecture="amd64"
+            publicKeyToken="31bf3856ad364e35"
+            language="neutral" versionScope="nonSxS"
+            xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <Interfaces>
                 <Interface wcm:action="add">
                     <Identifier>{{mac_address}}</Identifier>
@@ -211,7 +219,7 @@
                 </Interface>
             </Interfaces>
         </component>
-        
+
         <component name="Microsoft-Windows-SystemRestore-Main" processorArchitecture="x86"
             publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
@@ -278,9 +286,9 @@
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
-                  <Order>1</Order>
-                  <CommandLine>{{setup_command}}</CommandLine>
-                  <Description>Continue Setup</Description>
+                    <Order>1</Order>
+                    <CommandLine>{{setup_command}}</CommandLine>
+                    <Description>Continue Setup</Description>
                 </SynchronousCommand>
             </FirstLogonCommands>
             <RegisteredOwner>{{user_name}}</RegisteredOwner>
@@ -326,9 +334,9 @@
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
-                  <Order>1</Order>
-                  <CommandLine>{{setup_command}}</CommandLine>
-                  <Description>Continue Setup</Description>
+                    <Order>1</Order>
+                    <CommandLine>{{setup_command}}</CommandLine>
+                    <Description>Continue Setup</Description>
                 </SynchronousCommand>
             </FirstLogonCommands>
             <RegisteredOwner>{{user_name}}</RegisteredOwner>

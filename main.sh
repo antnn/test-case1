@@ -25,6 +25,7 @@ build() {
     local ISO_TEMP_ROOT_BUILD_DIR="/tmp/iso"
     local OS_ISO="/iso/win_server.iso"
     local CONFIG_ISO="/opt/vm/win/config.iso"
+    local WIN_SOCKET_MON="/tmp/qemu.win.socket"
 
     local WIN_MAC_ADDRESS="00:11:22:33:44:55"
     local WIN_IP_ADDRESS="192.168.152.3/24"
@@ -43,9 +44,9 @@ build() {
         --admin-password "Passw0rd!" --computer-name "MAINSERVER" \
         --mac-address "$WIN_MAC_ADDRESS" --ip-address "$WIN_IP_ADDRESS" \
         --route-prefix "0.0.0.0/0" --default-gw "$ROUTER_IP" --dns-server "127.0.0.1" \
-        --secondary-dns "1.1.1.1" --setup-command "$powershell_script" 
+        --secondary-dns "1.1.1.1" --setup-command "$powershell_script"
 
-     /opt/project/create_config_iso.sh --build-dir "$ISO_TEMP_ROOT_BUILD_DIR" \
+    /opt/project/create_config_iso.sh --build-dir "$ISO_TEMP_ROOT_BUILD_DIR" \
         --output-path "$CONFIG_ISO" \
         --virtio-url "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.262-2/virtio-win-0.1.262.iso" \
         --virtio-checksum "bdc2ad1727a08b6d8a59d40e112d930f53a2b354bdef85903abaad896214f0a3"
@@ -61,17 +62,21 @@ build() {
         mac_address="$WIN_MAC_ADDRESS" \
         bridge="$BRIDGE" \
         os_iso="$OS_ISO" \
+        socket_mon="$WIN_SOCKET_MON" \
         config_iso="$CONFIG_ISO" > /opt/vm/win/win2k22.domain.xml
     
+    curl 
 }
 
 # Function to run commands as user
+#BRIDGE=virbr1
 run_as_root() {
     echo "allow $BRIDGE" >> /etc/qemu/bridge.conf
     systemctl enable --now virtnetworkd-ro.socket
     virsh net-define /opt/project/internal.net.xml
     virsh net-start private && virsh net-autostart private
     chown -R user /tmp/wayland-0
+    # Fixing wayland
     bash -c "sleep 3; mkdir -p /run/user/1000; ln -sf /tmp/wayland-0 /run/user/1000/wayland-0 ; chown -R user /run/user/1000" &
     sudo -u user bash
 }

@@ -12,14 +12,15 @@
 # Remark  : A reboot is needed after promoting to DC.
 ##############################################################################
 
-function PromoteDomainController {
+function PromoteDomainController
+{
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [string]$DomainName, 
+        [string]$DomainName,
 
         [string]$AdminUser = "Administrator",
-    
+
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$AdminPwd,
@@ -30,21 +31,24 @@ function PromoteDomainController {
         [Parameter(Mandatory = $false)]
         [string]$ForestMode
     )
-    
-    try {
+
+    try
+    {
         # Install ADDS
         Install-WindowsFeature -Name AD-Domain-Services `
             -IncludeAllSubFeature `
             -IncludeManagementTools `
             -ErrorAction Stop
-    
+
         # Promote to DC
         Import-Module ADDSDeployment
 
         $SecurePwd = ConvertTo-SecureString $AdminPwd -AsPlainText -Force
 
-        if ($IsPrimary) {
-            if ([System.String]::IsNullOrEmpty($ForestMode)) {
+        if ($IsPrimary)
+        {
+            if ( [System.String]::IsNullOrEmpty($ForestMode))
+            {
                 Install-ADDSForest -DomainName $domainName `
                     -InstallDns `
                     -SafeModeAdministratorPassword $SecurePwd `
@@ -52,7 +56,8 @@ function PromoteDomainController {
                     -ErrorAction Stop `
                     -Force
             }
-            else {
+            else
+            {
                 Install-ADDSForest -ForestMode $ForestMode `
                     -DomainMode $ForestMode `
                     -DomainName $domainName `
@@ -63,7 +68,8 @@ function PromoteDomainController {
                     -Force
             }
         }
-        else {
+        else
+        {
             $cred = New-Object System.Management.Automation.PSCredential "$domainName\$AdminUser", $SecurePwd -ErrorAction Stop
             Install-ADDSDomainController -DomainName $domainName `
                 -Credential $cred `
@@ -75,14 +81,16 @@ function PromoteDomainController {
         }
 
     }
-    catch {
+    catch
+    {
         throw "Error happeded while executing PromoteDomainController.ps1:" + $_.Exception.Message
     }
 
 }
 
 $isDC = (Get-WmiObject -Class Win32_ComputerSystem).DomainRole -ge 4
-if ($isDC) {
+if ($isDC)
+{
     Write-Host "This machine is already a domain controller. No action needed."
     exit(0)
 }
