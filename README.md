@@ -24,7 +24,7 @@ def callback_function(stream, events, data: Data, **args):
     # ...
 - stream: The libvirt stream object for I/O operations.
 - events: Event flags from libvirt.
-- data: A Data object containing the current state and context.
+- data:   A Data object containing the current state and context.
 - **args: Additional keyword arguments specific to each callback.
 ```
 Callbacks are chained using the `CallbackList` class. This allows for complex sequences of operations:
