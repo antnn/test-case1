@@ -48,8 +48,7 @@ def read_until(condition_fn: typing.Callable[[str], bool]):
         # ... (reading logic)
         res = condition_fn(decoded_buffer, **args)
         if res:
-          data.set_return(**res)
-          return data
+          return data.set_return(**res)
     return _read_until
 ```
 ### Event Loop Integration: 
