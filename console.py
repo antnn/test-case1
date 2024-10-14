@@ -212,9 +212,11 @@ class LibvirtConsoleHandler:
 
 
 
-#https://libvirt.org/formatdomain.html#relationship-between-serial-ports-and-consoles
-#https://gitlab.com/qemu-project/qemu/-/blob/master/include/hw/virtio/virtio-serial.h?ref_type=heads#L215
-#https://github.com/qemu/qemu/blob/e22f675bdd3689472032d0de0799519c3e07fd2c/hw/char/virtio-console.c
+"""
+https://libvirt.org/formatdomain.html#relationship-between-serial-ports-and-consoles
+https://gitlab.com/qemu-project/qemu/-/blob/master/include/hw/virtio/virtio-serial.h?ref_type=heads#L215
+https://github.com/qemu/qemu/blob/e22f675bdd3689472032d0de0799519c3e07fd2c/hw/char/virtio-console.c
+"""
 def main2():
     #
 
