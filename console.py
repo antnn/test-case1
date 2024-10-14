@@ -224,7 +224,10 @@ def main2():
     """
     Example for Mikrotik Cloud Hosted Router
     Althoug the same task can be acoplished using standart UNIX utils
-    like cat, grep and echo: [ cat /dev/pts/5 ][ echo "something" > /dev/pts/5 ]  
+    like cat, grep and echo 
+    The simplest example:  
+        terminal1: cat /dev/pts/5 
+        terminal2: echo "something" > /dev/pts/5
     """
 
     print ("Escape character is ^]")
