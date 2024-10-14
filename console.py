@@ -17,6 +17,9 @@ class CallbackList:
         return self.append(new_node)
 
     def append(self, new_node: 'CallbackList') -> 'CallbackList':
+        """
+        TODO add some method named like finish that reverses list 
+        """
         new_node._previous = self
         current = self
         while current._next:
