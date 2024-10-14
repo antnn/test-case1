@@ -209,6 +209,7 @@ class LibvirtConsoleHandler:
         return console.run_console
 
     def run(self) -> None:
+        # If there is no data from console.stream it will become availiable after this call. If it actually has data
         while self.check_console():
             libvirt.virEventRunDefaultImpl()
 
