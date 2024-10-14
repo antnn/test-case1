@@ -209,7 +209,7 @@ class LibvirtConsoleHandler:
         return console.run_console
 
     def run(self) -> None:
-        # If console.stream.recv returns -2 on read it will become availiable after this call. If it actually has data
+        # If console.stream.recv returns -2 it will become availiable after this call. If it actually has data
         while self.check_console():
             libvirt.virEventRunDefaultImpl()
 
