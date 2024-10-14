@@ -218,7 +218,9 @@ https://gitlab.com/qemu-project/qemu/-/blob/master/include/hw/virtio/virtio-seri
 https://github.com/qemu/qemu/blob/e22f675bdd3689472032d0de0799519c3e07fd2c/hw/char/virtio-console.c
 """
 def main2():
-    #
+    """
+    Example for Mikrotik Cloud Hosted Router
+    """
 
     print ("Escape character is ^]")
     logging.basicConfig(filename='msg.log', level=logging.DEBUG)
