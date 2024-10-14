@@ -1,3 +1,5 @@
+#### Note needs to be update in accrodance with console.py
+#### previous version
 ### Callback Function Structure: 
 The code uses a linked list of callback functions `CallbackList` to process console output. Each callback function should follow this general structure:
 ```python
