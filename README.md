@@ -1,3 +1,57 @@
+```bash
+#!/bin/bash
+set -Eeuo pipefail
+set -o nounset
+set -o errexit
+
+export VIRTIO_ISO="virtio.iso"
+export PWSH_MSI="pwsh.msi"
+export ROS_DRIVE="ros.img"
+
+download_dir="downloads"
+mkdir -p "$download_dir"
+( cd "$download_dir"
+
+download_and_verify() {
+    local url="$1"
+    local filename="$2"
+    local checksum="$3"
+    local is_ros="${4:-false}"
+
+    if [[ -f "$filename" ]] && echo "$checksum $filename" | sha256sum -c --quiet; then
+        echo "Checksum verified for existing $filename"
+    else
+        echo "Downloading $filename..."
+        if [[ "$is_ros" == "true" ]]; then
+            aria2c -x16 -s16 -o- "$url" | tee >(sha256sum | grep -q "$checksum" || (echo "Checksum verification failed"; exit 1)) | funzip > "$filename"
+        else
+            aria2c -x16 -s16 -o "$filename" "$url"
+            echo "$checksum $filename" | sha256sum -c || { echo "Checksum verification failed for $filename"; exit 1; }
+        fi
+        echo "Download and verification of $filename complete"
+    fi
+}
+# Download and verify VIRTIO_ISO
+virtio_url="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.262-2/virtio-win-0.1.262.iso"
+virtio_iso_checksum="bdc2ad1727a08b6d8a59d40e112d930f53a2b354bdef85903abaad896214f0a3"
+download_and_verify "$virtio_url" "$VIRTIO_ISO" "$virtio_iso_checksum"
+
+# Download and verify PWSH_MSI
+pwsh_url="https://github.com/PowerShell/PowerShell/releases/download/v7.4.5/PowerShell-7.4.5-win-x64.msi"
+pwsh_sha="4d0286cc70c2e45404ad940ef96394b191da45d7de46340b05c013eef41c1eec"
+download_and_verify "$pwsh_url" "$PWSH_MSI" "$pwsh_sha"
+
+ros_url="https://download.mikrotik.com/routeros/7.16.1/chr-7.16.1.img.zip"
+ros_sha="7a47c7bddf51c6f5153a7e402fd0a32044557eaf0d96af273b"
+download_and_verify "$ros_url" "$ROS_DRIVE" "$ros_sha" true
+)
+
+podman build --build-arg ROS_DRIVE="$ROS_DRIVE" --build-arg PWSH_MSI="$PWSH_MSI"\
+    --build-arg VIRTIO_ISO="$VIRTIO_ISO" -t image_name .
+
+```
+
+
 #### Note^ needs to be updated in accrodance with console.py
 #### This is previous version
 ### Callback Function Structure: 
