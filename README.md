@@ -12,6 +12,8 @@ download_dir="downloads"
 mkdir -p "$download_dir"
 ( cd "$download_dir"
 
+DOWNLOAD_CMD="curl -L"
+#DOWNLOAD_CMD="aria2c -x16 -s16 -o-"
 download_and_verify() {
     local url="$1"
     local filename="$2"
@@ -23,9 +25,9 @@ download_and_verify() {
     else
         echo "Downloading $filename..."
         if [[ "$is_ros" == "true" ]]; then
-            aria2c -x16 -s16 -o- "$url" | tee >(sha256sum | grep -q "$checksum" || (echo "Checksum verification failed"; exit 1)) | funzip > "$filename"
+            $DOWNLOAD_CMD "$url" | tee >(sha256sum | grep -q "$checksum" || (echo "Checksum verification failed"; exit 1)) | funzip > "$filename"
         else
-            aria2c -x16 -s16 -o "$filename" "$url"
+            $DOWNLOAD_CMD "$filename" "$url"
             echo "$checksum $filename" | sha256sum -c || { echo "Checksum verification failed for $filename"; exit 1; }
         fi
         echo "Download and verification of $filename complete"
