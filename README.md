@@ -44,8 +44,7 @@ download_and_verify "$ros_url" "${ROS_DRIVE}1" "$ros_sha"
 funzip "${ROS_DRIVE}1" > "$ROS_DRIVE"
 )
 
-podman build --build-arg ROS_DRIVE="$ROS_DRIVE" --build-arg PWSH_MSI="$PWSH_MSI"\
-    --build-arg VIRTIO_ISO="$VIRTIO_ISO" -t image_name .
+podman build -t image_name .
 
 ```
 
