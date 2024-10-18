@@ -1,5 +1,4 @@
 ```bash
-#!/bin/bash
 set -Eeuo pipefail
 set -o nounset
 set -o errexit
@@ -12,24 +11,20 @@ download_dir="downloads"
 mkdir -p "$download_dir"
 ( cd "$download_dir"
 
-DOWNLOAD_CMD="curl -L"
-#DOWNLOAD_CMD="aria2c -x16 -s16 -o-"
+#DOWNLOAD_CMD="curl -L"
+DOWNLOAD_CMD="aria2c -x16 -s16"
 download_and_verify() {
     local url="$1"
     local filename="$2"
     local checksum="$3"
-    local is_ros="${4:-false}"
-
+    
     if [[ -f "$filename" ]] && echo "$checksum $filename" | sha256sum -c --quiet; then
         echo "Checksum verified for existing $filename"
     else
         echo "Downloading $filename..."
-        if [[ "$is_ros" == "true" ]]; then
-            $DOWNLOAD_CMD "$url" | tee >(sha256sum | grep -q "$checksum" || (echo "Checksum verification failed"; exit 1)) | funzip > "$filename"
-        else
-            $DOWNLOAD_CMD "$filename" "$url"
-            echo "$checksum $filename" | sha256sum -c || { echo "Checksum verification failed for $filename"; exit 1; }
-        fi
+          $DOWNLOAD_CMD "$url" -o "$filename"
+          echo "$checksum $filename" | sha256sum -c || { echo "Checksum verification failed for $filename"; exit 1; }
+
         echo "Download and verification of $filename complete"
     fi
 }
@@ -44,15 +39,15 @@ pwsh_sha="4d0286cc70c2e45404ad940ef96394b191da45d7de46340b05c013eef41c1eec"
 download_and_verify "$pwsh_url" "$PWSH_MSI" "$pwsh_sha"
 
 ros_url="https://download.mikrotik.com/routeros/7.16.1/chr-7.16.1.img.zip"
-ros_sha="7a47c7bddf51c6f5153a7e402fd0a32044557eaf0d96af273b"
-download_and_verify "$ros_url" "$ROS_DRIVE" "$ros_sha" true
+ros_sha="7a47c7bddf51c6f5153a7e402fd0a32044557eaf0d96af273b87eb54b1889f29"
+download_and_verify "$ros_url" "${ROS_DRIVE}1" "$ros_sha"
+funzip "${ROS_DRIVE}1" > "$ROS_DRIVE"
 )
 
 podman build --build-arg ROS_DRIVE="$ROS_DRIVE" --build-arg PWSH_MSI="$PWSH_MSI"\
     --build-arg VIRTIO_ISO="$VIRTIO_ISO" -t image_name .
 
 ```
-
 
 #### Note^ needs to be updated in accrodance with console.py
 #### This is previous version
